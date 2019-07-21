@@ -1,0 +1,66 @@
+﻿@model VendingMachine.Models.Machine
+
+@{
+	ViewBag.Title = "Пользовательский интерфейс";
+	Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+@if (Model != null)
+{
+	<h2>Ваш баланс: @string.Format("{0:C}", @Model.ClientBalance)</h2>
+	<div class="col-md-12" style="padding-top: 3em;">
+
+		@foreach (var product in Model.Products)
+		{
+			using (@Html.BeginForm("ProvideProduct", "Home", new { productId = product.Id }, FormMethod.Post))
+			{
+				@Html.AntiForgeryToken()
+
+				<div class="col-md-3">
+					<kbd class="panel-default">@product.Name (в наличии: @product.Storage)</kbd>
+					<span>
+						@if (product.Storage > 0 && product.Price <= Model.ClientBalance)
+						{
+							<button type="submit">
+								<img width="200" height="200" src="@Url.Content(product.Image)" />
+							</button>
+						}
+						else
+						{
+							var message = string.Empty;
+							if (product.Storage == 0)
+							{
+								message = "Закончился";
+							}
+							else
+							{
+								message = "Пополните баланс";
+							}
+
+							<button disabled="disabled">
+								<img width="200" height="200" src="@Url.Content(product.Image)" />
+								<p style="color: red; padding: 0.5em 0em 0.5em 0em;">@message</p>
+							</button>
+						}
+					</span>
+					<div style="font-size: 14pt; font-weight: bold;">@string.Format("{0:C}", @product.Price)</div>
+				</div>
+			}
+		}
+	</div>
+
+	<div class="col-md-12" style="padding-top: 3em;">
+		@{Html.RenderAction("RenderCoinButtons", "Home", new { coins = Model.Coins });}
+	</div>
+
+	<div class="col-md-12" style="padding-top: 3em;">
+		@if (Model.ClientBalance > 0)
+		{
+			{ Html.RenderAction("RenderProvideChange", "Home"); }
+		}
+	</div>
+}
+else
+{
+	<h2>Что-то пошло не так, обратитесь к Администратору</h2>
+}

@@ -1,0 +1,29 @@
+﻿@model VendingMachine.Models.Product
+
+@using (@Html.BeginForm("UpdateProduct", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(model => model.Id)
+	@Html.HiddenFor(model => model.Image)
+	@Html.HiddenFor(model => model.MachineId)
+
+	<tr>
+		<td class="form-inline col-md-3" style="vertical-align: middle;">
+			@Html.LabelFor(model => model.Name): @Html.TextBoxFor(model => model.Name, new { @class = "form-control input-sm" })
+		</td>
+		<td class="form-inline col-md-3" style="vertical-align: middle;">
+			<img src="@Url.Content(Model.Image)" width="100" height="100" />
+			@Html.TextBoxFor(mode => Model.UploadLogo, new { type = "file", @class = "form-control input-sm" })
+		</td>
+		<td class="form-inline col-md-2" style="vertical-align: middle;">
+			@Html.LabelFor(model => model.Price): @Html.TextBoxFor(model => model.Price, new { @class = "form-control input-sm" })
+		</td>
+		<td class="form-inline col-md-2" style="vertical-align: middle;">
+			@Html.LabelFor(model => model.Storage): @Html.TextBoxFor(model => model.Storage, new { @class = "form-control input-sm" })
+		</td>
+		<td class="form-inline text-center col-md-2" style="vertical-align: middle;">
+			<input type="submit" class="btn btn-default btn-sm form-control" value="Обновить" />
+			@Html.ActionLink("Удалить", "RemoveProduct", "Admin", new { id = Model.Id }, new { @class = "btn btn-default btn-sm form-control" })
+		</td>
+	</tr>
+}

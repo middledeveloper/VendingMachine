@@ -1,0 +1,24 @@
+﻿@model VendingMachine.Models.Product
+
+@using (Html.BeginForm("AddProduct", "Admin", FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(model => model.MachineId)
+
+	<table class="table">
+		<tr>
+			<th>@Html.LabelFor(model => model.Name)</th>
+			<th>@Html.LabelFor(model => model.UploadLogo)</th>
+			<th>@Html.LabelFor(model => model.Price)</th>
+			<th>@Html.LabelFor(model => model.Storage)</th>
+			<th></th>
+		</tr>
+		<tr>
+			<td>@Html.TextBoxFor(model => model.Name, new { @class = "input-sm form-control" })</td>
+			<td>@Html.TextBoxFor(model => model.UploadLogo, new { @class = "input-sm form-control", type = "file" })</td>
+			<td>@Html.TextBoxFor(model => model.Price, new { @class = "input-sm form-control" })</td>
+			<td>@Html.TextBoxFor(model => model.Storage, new { @class = "input-sm form-control" })</td>
+			<td><input type="submit" value="Добавить" class="btn btn-default" /></td>
+		</tr>
+	</table>
+}

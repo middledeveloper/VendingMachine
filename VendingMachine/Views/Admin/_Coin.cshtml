@@ -1,0 +1,24 @@
+﻿@model VendingMachine.Models.Coin
+
+@using (@Html.BeginForm("UpdateCoin", "Admin", FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(model => model.Id)
+	@Html.HiddenFor(model => model.Value)
+	@Html.HiddenFor(model => model.MachineId)
+
+	<tr>
+		<td class="form-inline" style="vertical-align: middle;">
+			@Html.LabelFor(model => model.Value): @string.Format("{0:C}", Model.Value)
+		</td>
+		<td class="form-inline" style="vertical-align: middle;">
+			@Html.LabelFor(model => model.TotalCount): @Html.TextBoxFor(model => model.TotalCount, new { @class = "form-control input-sm" })
+		</td>
+		<td class="form-inline" style="vertical-align: middle;">
+			@Html.LabelFor(model => model.Blocked): @Html.CheckBoxFor(model => model.Blocked, new { @class = "checkbox" })
+		</td>
+		<td>
+			<input type="submit" class="btn btn-default btn-sm form-control" value="Обновить" />
+		</td>
+	</tr>
+}

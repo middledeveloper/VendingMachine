@@ -1,0 +1,76 @@
+﻿@model VendingMachine.Models.Machine
+
+@{
+	ViewBag.Title = "Административный интерфейс";
+	Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+@if (Model != null)
+{
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">Текущий баланс</div>
+			<div class="panel-body text-center h3">@string.Format("{0:C}", @Model.TotalBalance)</div>
+		</div>
+	</div>
+
+	<div class="col-md-12" style="padding-top: 3em;">
+		<div class="panel panel-default">
+			<div class="panel-heading">Добавить товар</div>
+			<div class="panel-body text-center">
+
+				@{ Html.RenderAction("RenderProductForm", "Admin"); }
+
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">Импорт товаров (.csv)</div>
+			<div class="panel-body">
+
+				@using (@Html.BeginForm("ImportProducts", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+				{
+					@Html.AntiForgeryToken()
+					<div class="col-md-12">
+						<div class="form-inline">
+							<input type="file" name="csv" class="form-control input-sm" />
+							<input type="submit" value="Импорт" class="btn btn-default form-control input-sm" />
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">Товары в автомате</div>
+			<div class="panel-body text-center">
+				<table class="table">
+
+					@foreach (var product in Model.Products)
+					{
+						{ Html.RenderAction("RenderProductManager", "Admin", new { productId = product.Id }); }
+					}
+
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-12" style="padding-top: 3em;">
+		<div class="panel panel-default">
+			<div class="panel-heading">Монеты</div>
+			<div class="panel-body text-center">
+				<table class="table">
+
+					@foreach (var coin in Model.Coins)
+					{
+						{ Html.RenderAction("RenderCoinManager", "Admin", new { coinId = coin.Id }); }
+					}
+
+				</table>
+			</div>
+		</div>
+	</div>
+}
+else
+{
+	<h2>Что-то пошло не так, обратитесь к Администратору</h2>
+}

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<VendingMachine.Models.Coin>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Пополнение баланса</div>
+	<div class="panel-body">
+		@foreach (var coin in Model)
+		{
+			<div class="col-md-3">
+				@if (coin.Blocked)
+				{
+					<input type="button" class="btn btn-default disabled form-control" value="Внести @String.Format("{0:C}", @coin.Value)" />
+				}
+				else
+				{
+					@Html.ActionLink(
+					"Внести " + @String.Format("{0:C}", @coin.Value),
+					"AddCoin",
+					"Home",
+					new { coinId = coin.Id },
+					new { @class = "btn btn-default form-control" })
+				}
+
+			</div>
+		}
+	</div>
+</div>
